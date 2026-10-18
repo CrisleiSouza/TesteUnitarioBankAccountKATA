@@ -80,6 +80,18 @@ public class BankAccountParameterizedTest {
         );
     }
 
+    @ParameterizedTest(name = "Saque de {1} com saldo de {0} deve lançar exceção")
+    @CsvSource({
+        "100, 500",
+        "1000, 1100",
+        "500, 501"
+    })
+    void should_not_allow_withdrawal_above_balance(String deposito, String saque) {
+        account.deposit(new BigDecimal(deposito));
+        assertThrows( IllegalArgumentException.class, () -> account.withdraw(new BigDecimal(saque) )
+    );
+}
+
     @ParameterizedTest(name = "Depósito {0} + saque {1} deve resultar em {2}")
     @CsvSource({
         "1000, 200, 800",
